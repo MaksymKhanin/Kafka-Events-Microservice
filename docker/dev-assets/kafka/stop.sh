@@ -1,0 +1,1 @@
+docker-compose -p kafka-template down

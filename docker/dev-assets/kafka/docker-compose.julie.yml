@@ -1,0 +1,34 @@
+---
+version: '3'
+services:
+  julie-outgoing:
+    image: purbon/kafka-topology-builder:latest
+    hostname: outgoing-julie
+    container_name: outgoing-julie
+    depends_on:
+      broker:
+        condition: service_healthy
+      schema-registry:
+        condition: service_healthy
+    ports:
+      - "9098:9098"
+    command: 'julie-ops-cli.sh --brokers broker:29092 --topology /julie/topology-local.yml --clientConfig /julie/local.properties'
+    volumes: 
+      - ./outgoing-schemas:/schemas
+      - ./outgoing-julie:/julie
+
+  julie-incoming:
+    image: purbon/kafka-topology-builder:latest
+    hostname: incoming-julie
+    container_name: incoming-julie
+    depends_on:
+      broker:
+        condition: service_healthy
+      schema-registry:
+        condition: service_healthy
+    ports:
+      - "9099:9099"
+    command: 'julie-ops-cli.sh --brokers broker:29092 --topology /julie/topology-local.yml --clientConfig /julie/local.properties'
+    volumes: 
+      - ./incoming-schemas:/schemas
+      - ./incoming-julie:/julie

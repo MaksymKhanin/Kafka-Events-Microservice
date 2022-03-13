@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  cosmosdb:
+    container_name: cosmosdb
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+    tty: true
+    restart: always
+    ports:
+        - "8081:8081"
+        - "10251:10251"
+        - "10252:10252"
+        - "10253:10253"
+        - "10254:10254"
+    volumes:
+        -  vol_cosmos:/data/db
+    environment:
+      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 5
+      AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true"
+      AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE:
+        
+volumes:
+    vol_cosmos:
